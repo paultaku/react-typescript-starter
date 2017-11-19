@@ -1,14 +1,14 @@
 {
   "name": "tsc-react",
   "version": "1.0.0",
-  "description": "",
+  "description": "reactjs on typscript starter project",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server --host $IP --port $PORT --disable-host-check --public"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "paultaku",
+  "license": "MIT",
   "dependencies": {
     "@types/react": "^16.0.25",
     "@types/react-dom": "^16.0.3",

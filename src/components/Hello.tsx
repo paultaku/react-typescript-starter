@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styles from './hello.module.scss';
 
 interface IProps { compiler: string; framework: string; }
 
@@ -6,7 +7,7 @@ interface IProps { compiler: string; framework: string; }
 export default class Hello extends Component<IProps, {}> {
     render() {
       return (
-        <h1>Hello world! from {this.props.compiler} and {this.props.framework}!</h1>
+        <h1 className={styles.hello}>Hello world! from {this.props.compiler} and {this.props.framework}!</h1>
       )
     }
   }

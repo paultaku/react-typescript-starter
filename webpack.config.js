@@ -1,7 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
+// style files regexes
+const cssRegex = /\.css$/;
+const cssModuleRegex = /\.module\.css$/;
+const sassRegex = /\.(scss|sass)$/;
+const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 module.exports = {
+    mode: 'development',
     entry: [
         "react-hot-loader/patch",
         __dirname + "/src/index.tsx"
@@ -27,7 +35,7 @@ module.exports = {
 
     resolve: {
         // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: [".ts", ".tsx", ".js", ".json"]
+        extensions: [".ts", ".tsx", ".js", ".json", ".css", ".scss", ".sass"]
     },
 
     module: {
@@ -35,9 +43,40 @@ module.exports = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
             {
                 test: /\.tsx?$/,
+                loader: 'tslint-loader',
+                exclude: /node_modules/,
+                enforce: 'pre',
+            },
+            {
+                test: /\.tsx?$/,
                 loader: [
-                    "react-hot-loader/webpack",
                     "awesome-typescript-loader"
+                ]
+            },
+
+            {
+                test: cssModuleRegex,
+                exclude: cssRegex,
+                use: [
+                    // to inject the result into the DOM as a style block
+                    { loader: "style-loader" },
+                    // to convert the resulting CSS to Javascript to be bundled (modules:true to rename CSS classes in output to cryptic identifiers, except if wrapped in a :global(...) pseudo class)
+                    { loader: "css-loader", options: { modules: true } },
+                ]
+            },
+
+            {
+                test: sassModuleRegex,
+                use: [
+                    // to inject the result into the DOM as a style block
+                    { loader: "style-loader" },
+                    // to convert the resulting CSS to Javascript to be bundled (modules:true to rename CSS classes in output to cryptic identifiers, except if wrapped in a :global(...) pseudo class)
+                    { loader: "css-loader", options: {
+                        modules: true,
+                        importLoaders: 2,
+                    } },
+                    // to convert SASS to CSS
+                    { loader: "sass-loader" },
                 ]
             },
 
@@ -71,6 +110,7 @@ module.exports = {
         "react-dom": "ReactDOM"
     },
     plugins: [
+        new MiniCssExtractPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.NoEmitOnErrorsPlugin()

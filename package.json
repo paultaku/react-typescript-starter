@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --host $IP --port $PORT --disable-host-check --public"
+    "start": "webpack-dev-server --config webpack.config.js --disable-host-check --public"
   },
   "author": "paultaku",
   "license": "MIT",
   "dependencies": {
-    "@types/react": "^16.0.25",
-    "@types/react-dom": "^16.0.3",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
     "react": "^16.1.1",
     "react-dom": "^16.1.1"
   },

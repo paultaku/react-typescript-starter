@@ -19,10 +19,10 @@ module.exports = {
         contentBase: path.join(__dirname, ""),
         watchContentBase: true,
         compress: true,
-        port: process.env.PORT || 8100,
+        port: process.env.PORT || 3000,
         hot: true,
         inline: true,
-        public: process.env.IP || "0.0.0.0"
+        public: process.env.IP || "localhost"
     },
 
     resolve: {
@@ -46,7 +46,19 @@ module.exports = {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: ["source-map-loader"]
-            }
+            },
+
+            {
+                test: /\.(png|jpg|gif|svg)$/i,
+                use: [
+                  {
+                    loader: 'url-loader',
+                    options: {
+                      limit: 8192,
+                    },
+                  },
+                ],
+              },
         ]
     },
 

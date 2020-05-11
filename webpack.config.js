@@ -7,6 +7,9 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const imageInlineSizeLimit = parseInt(
+    process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
+);
 
 module.exports = {
     mode: 'development',
@@ -27,7 +30,7 @@ module.exports = {
         contentBase: path.join(__dirname, ""),
         watchContentBase: true,
         compress: true,
-        port: process.env.PORT || 3000,
+        port: process.env.PORT || 4200,
         hot: true,
         inline: true,
         public: process.env.IP || "localhost"
@@ -79,25 +82,50 @@ module.exports = {
                     { loader: "sass-loader" },
                 ]
             },
-
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                loader: 'file-loader',
+                options: {
+                  name: '[path][name]_[hash:8].[ext]',
+                  esModule: false,
+                },
+            },
+            // {
+            //     test: [
+            //         /\.bmp$/,
+            //         /\.gif$/,
+            //         /\.jpe?g$/,
+            //         /\.png$/
+            //     ],
+            //     loader: require.resolve('url-loader'),
+            //     options: {
+            //         limit: imageInlineSizeLimit,
+            //         name: 'static/media/[name].[hash:8].[ext]',
+            //     },
+            // },
+            // {
+            //     loader: require.resolve('file-loader'),
+            //     // Exclude `js` files to keep "css" loader working as it injects
+            //     // its runtime that would otherwise be processed through "file" loader.
+            //     // Also exclude `html` and `json` extensions so they get processed
+            //     // by webpacks internal loaders.
+            //     exclude: [
+            //         /\.(js|mjs|jsx|ts|tsx)$/,
+            //         /\.html$/,
+            //         /\.json$/,
+            //         sassRegex,
+            //         cssRegex,
+            //     ],
+            //     options: {
+            //         name: 'static/media/[name].[hash:8].[ext]',
+            //     },
+            // },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             {
                 enforce: "pre",
                 test: /\.js$/,
                 loader: ["source-map-loader"]
             },
-
-            {
-                test: /\.(png|jpg|gif|svg)$/i,
-                use: [
-                  {
-                    loader: 'url-loader',
-                    options: {
-                      limit: 8192,
-                    },
-                  },
-                ],
-              },
         ]
     },
 
